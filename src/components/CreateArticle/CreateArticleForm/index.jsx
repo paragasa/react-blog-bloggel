@@ -5,7 +5,9 @@ import { Editor } from 'react-draft-wysiwyg';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 
 
-const CreateArticleForm = ({handleInput,editing,updateArticle, article, title, category, content,handleEditorState, handleSubmit, categories, errors}) => {
+const CreateArticleForm = ({
+  handleInput,editing,updateArticle, article, 
+  title, category, content,onEditorStateChange, handleSubmit, categories, errors}) => {
     return (
         <div>
           {/* END Header */}
@@ -45,20 +47,26 @@ const CreateArticleForm = ({handleInput,editing,updateArticle, article, title, c
                         <div className="form-group col-12 col-md-6">
                           <select 
                           name="category" 
-                          value={category}
+                          value={category|| ''}
                           onChange={handleInput} 
                           className="form-control form-control-lg">
+
                             <option value>Select category</option>
-                            {categories.map(category =>(<option key={category.id} value={category.id}>
-                                {category.name}
+
+                            {categories.map(categoryOfArray =>(
+                              <option
+                               key={categoryOfArray.id} 
+                               value={categoryOfArray.id}>
+                              {categoryOfArray.name}
                              </option>))}
+
                           </select>
                         </div>
                       </div>
                       <div className="form-group">
                           <Editor
                             editorState={content}
-                            onEditorStateChange={handleEditorState}
+                            onEditorStateChange={onEditorStateChange}
                           />
                       </div>
                       <div className="text-center">

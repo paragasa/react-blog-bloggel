@@ -58,6 +58,8 @@ export default class ArticleServices {
         
     }
     updateArticle = async(data,article, token) =>{
+
+        //upload and update image only if user places new one
         let image;
         if(data.image){
             image = await this.uploadToCloudinary(data.image);
@@ -107,13 +109,13 @@ export default class ArticleServices {
 
         const response = await Axios.post('https://api.cloudinary.com/v1_1/dazp4u2d6/image/upload', form)
 
-        //console.log(response)
+ 
         return response.data;
     }
 
     getArticles = async(url=`${config.apiUrl}/articles`) => {
         const response = await Axios.get(url)
-
+       
         return response.data.data;
     }
 
@@ -128,6 +130,7 @@ export default class ArticleServices {
                 Authorization: `Bearer ${token}`,
             }
         });
+        
         return response.data.data;
     }
     async deleteArticle(id,token){

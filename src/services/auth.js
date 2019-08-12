@@ -7,7 +7,6 @@ import config from './../config'
 export default class AuthService {
 
     async registerUser(data){
-      console.log('called')
       const rules = {
         name: 'required|string',
         email: 'required|email',

@@ -1,9 +1,10 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { EditorState, convertToRaw } from 'draft-js';
+import { EditorState,ContentState, convertToRaw } from 'draft-js';
 import CreateArticleForm from './CreateArticleForm'
 import draftToHtml from 'draftjs-to-html';
+import htmlToDraft from 'html-to-draftjs';
 
 
 // HANDLE CREATIONG AND EDITNG
@@ -23,9 +24,9 @@ class CreateArticle extends React.Component {
     }
     async componentWillMount(){
       //API: GET to Categories 
-      const categories = await this.props.getArticleCategories();
       
       if(this.props.match.params.slug){
+
         //find matching article
         const article = this.props.articles.find(article=> article.slug ===this.props.match.params.slug);
         //redirect user if loading again
@@ -33,15 +34,25 @@ class CreateArticle extends React.Component {
           this.props.history.push('/user/articles');
           return;
         }
+       
+        const categories = await this.props.getArticleCategories();
+       
+        const blocksFromHtml = htmlToDraft(article.content);
+        const { contentBlocks, entityMap } = blocksFromHtml;
+        const contentState = ContentState.createFromBlockArray(contentBlocks, entityMap);
+        const editorState = EditorState.createWithContent(contentState);
+
         this.setState({
           title: article.title,
           category: article.category_id,
-          content: article.content,
+          content: editorState,
           editing: true,
           article: article,
           categories: categories,
         });
       }else{
+        
+        const categories = await this.props.getArticleCategories();
         this.setState({
           categories: categories,
         });
@@ -57,16 +68,16 @@ class CreateArticle extends React.Component {
       })
     }
 
-    handleEditorState=(editorState)=>{
+    onEditorStateChange=(editorState)=>{
       this.setState({
-        content:editorState,
+        content : editorState,
       })
     }
 
     handleSubmit = async(event) => {
- 
+      
       event.preventDefault();
- 
+      
       try{
         const article= await this.props.createArticle({
           title: this.state.title,
@@ -79,7 +90,7 @@ class CreateArticle extends React.Component {
       }catch(errors){
         this.props.NotificationService.error('Something went wrong.');
         this.setState({
-          errors: errors
+          errors: errors,
         })
       }
     }
@@ -89,11 +100,12 @@ class CreateArticle extends React.Component {
       //update service
       event.preventDefault();
       //pass update objct and psuh
+     
       try{
         await this.props.updateArticle({
           title: this.state.title,
           image:this.state.image,
-          content: this.state.content,
+          content: draftToHtml(convertToRaw(this.state.content.getCurrentContent())),
           category: this.state.category,
         }, this.state.article, this.props.token)
         this.props.NotificationService.success('Article Updated');
@@ -118,7 +130,7 @@ class CreateArticle extends React.Component {
               category={this.state.category}
               content={this.state.content}
               updateArticle={this.updateArticle}
-              handleEditorState={this.handleEditorState}
+              onEditorStateChange={this.onEditorStateChange}
               />
        
       )

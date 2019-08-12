@@ -23,7 +23,7 @@ class SingleArticle extends Component {
     }else{
       article = await this.props.getArticle(this.props.match.params.slug)
     } 
-    //console.log(article)
+
     this.setState({
       article: article,
       loading:false,

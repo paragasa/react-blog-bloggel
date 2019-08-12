@@ -101,7 +101,7 @@ class App extends React.Component{
                   isAuthenticated={ this.state.authUser !==null}
               />
               <Auth 
-                  exact path="/article/edit/:slug"
+                  path="/article/edit/:slug"
                   component={CreateArticle}
                   props={{
                     getArticleCategories: this.props.ArticleService.getArticleCategories,
@@ -183,7 +183,8 @@ class App extends React.Component{
                 }/> */}
               
               {/* SINGLE ARTICLE  */}
-              <Route path="/article/:slug" 
+              <Route 
+                exact path="/article/:slug" 
                 render={
                   props => (
                     <SingleArticle
