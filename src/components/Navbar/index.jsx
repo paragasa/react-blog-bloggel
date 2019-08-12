@@ -3,7 +3,7 @@ import React from 'react'
 import {Link} from 'react-router-dom'
 
 
-const Navbar = ({authUser}) =>{
+const Navbar = ({authUser, removeAuthUser}) =>{
     return(
         <nav className="topbar topbar-inverse topbar-expand-md topbar-sticky">
         <div className="container">
@@ -25,12 +25,12 @@ const Navbar = ({authUser}) =>{
               {
                 authUser &&
                 <li className="nav-item">
-                  <Link className="nav-link" to="/">Hey {authUser && authUser.user.name}!
+                  <a className="nav-link">Hey {authUser && authUser.user.name}!
                     <i className="fa fa-caret-down" />
-                  </Link>
+                  </a>
                   <div className="nav-submenu">
-                    <a className="nav-link" href="page-login.html">My articles</a>
-                    <a className="nav-link" href="">Logout</a>
+                    <Link className="nav-link" to="/user/articles">My articles</Link>
+                    <Link className="nav-link" onClick={removeAuthUser} to="/">Logout</Link>
                   </div>
                 </li>
               }

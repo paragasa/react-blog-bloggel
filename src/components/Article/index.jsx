@@ -9,13 +9,13 @@ const Article = ({article}) => {
               <Link to={`/article/${article.slug}`}>{article.title}</Link>
             </h3>
             <div className="link-color-default fs-12">
-              <a href="#">{article.category.name}</a>,
+              <Link to={`/article/${article.slug}`} >{article.category.name}</Link>,
               <time>{(new Date(article.created_at)).toDateString()}</time>
             </div>
           </header>
-          <a href="blog-single.html">
+          <Link to={`/article/${article.slug}`}>
             <img className="rounded" src={article.imageUrl} alt="..." />
-          </a>
+          </Link>
           <div className="card-block">
             <p className="text-justify">{article.content.substring(0,90)}</p>
             <p className="text-center mt-40">

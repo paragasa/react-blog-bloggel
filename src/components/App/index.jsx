@@ -1,6 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import {BrowserRouter , Route, withRouter} from 'react-router-dom';
+import { Route} from 'react-router-dom';
 
 import Auth from '../Auth';
 import Locked from '../Locked';
@@ -9,6 +8,7 @@ import Login from '../Login';
 import SignUp from '../SignUp';
 import CreateArticle from '../CreateArticle';
 import SingleArticle from '../SingleArticle';
+import UserArticles from '../UserArticles';
 import Navbar from '../Navbar';
 import Footer from '../Footer';
 
@@ -44,6 +44,7 @@ class App extends React.Component{
           authUser
       },() => {
         localStorage.setItem('user', JSON.stringify(authUser));
+        this.props.NotificationService.success('Successfull login!');
         this.props.history.push("/");
       })
   }
@@ -61,6 +62,7 @@ class App extends React.Component{
     this.setState({
       authUser:null,
     })
+    this.props.NotificationService.success('Logged out!');
   }
 
   render(){
@@ -70,19 +72,48 @@ class App extends React.Component{
               {/* NAVBAR */}
               {  
                   location.pathname !== '/login' && location.pathname !== '/register' &&
-                  <Navbar authUser={this.state.authUser}></Navbar>
+                  <Navbar 
+                      authUser={this.state.authUser}
+                      removeAuthUser={this.removeAuthUser}
+                    />
                }
 
                {/* WELCOME */}
               <Route 
                   exact path="/" 
                   render={
-                  props => <Welcome {...props} 
-                  getArticles = {this.props.ArticleService.getArticles}
-                  setArticles={this.setArticles}
-                />}
-                    
+                    props => 
+                    <Welcome {...props} 
+                    getArticles = {this.props.ArticleService.getArticles}
+                    setArticles={this.setArticles}
+                 />}    
                 />
+              {/* USER"S ARTICLES */}
+              <Auth 
+                  path="/user/articles"
+                  component={UserArticles}
+                  props={{
+                    getUserArticles: this.props.ArticleService.getUserArticles,
+                    setArticles: this.setArticles,
+                    token: this.state.authUser?this.state.authUser.token: null,
+                    deleteArticle: this.props.ArticleService.deleteArticle,
+                  }}
+                  isAuthenticated={ this.state.authUser !==null}
+              />
+              <Auth 
+                  exact path="/article/edit/:slug"
+                  component={CreateArticle}
+                  props={{
+                    getArticleCategories: this.props.ArticleService.getArticleCategories,
+                    createArticle : this.props.ArticleService.createArticle,
+                    token: this.state.authUser? this.state.authUser.token: null,
+                    updateArticle: this.props.ArticleService.updateArticle,
+                    articles: this.state.articles,
+                    NotificationService: this.props.NotificationService,
+                  }}
+                  isAuthenticated={ this.state.authUser !==null}
+              />
+
              {/* CREATE ARTICLE , NEW AUTH METHOD*/}
              
              <Auth 
@@ -91,7 +122,8 @@ class App extends React.Component{
                 props={{
                     getArticleCategories: this.props.ArticleService.getArticleCategories,
                     createArticle : this.props.ArticleService.createArticle,
-                    token: this.state.authUser? this.state.authUser.token: null
+                    token: this.state.authUser? this.state.authUser.token: null,
+                    NotificationService: this.props.NotificationService,
                 }}
                 isAuthenticated ={ this.state.authUser !==null}
              />
@@ -185,6 +217,7 @@ App.propTypes = {
     getArticlegories: PropTypes.PropTypes.func.isRequired,
     getArticles: PropTypes.PropTypes.func.isRequired,
     getArticle: PropTypes.PropTypes.func.isRequired,
+    deleteArticle:PropTypes.PropTypes.func.isRequired,
   }),
 };
 

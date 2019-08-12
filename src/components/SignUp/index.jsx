@@ -41,13 +41,16 @@ class SignUp extends React.Component{
      * handles form validation using indicative@5.0.5
      */
     handleSubmit = async (event)=>{
+
       event.preventDefault();
+
       //insert authservice 
       try{
         const user = await this.props.registerUser(this.state);
         this.props.setAuthUser(user);
       }
       catch (errors) {
+        this.props.NotificationService.error('Something went wrong.');
         this.setState({
           errors: errors
         });     

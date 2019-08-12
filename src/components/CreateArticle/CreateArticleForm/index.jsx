@@ -1,13 +1,14 @@
 import React from 'react'
 import Banner from './../../Banner';
 
-const CreateArticleForm = ({handleInput, handleSubmit, categories, errors}) => {
+const CreateArticleForm = ({handleInput,editing,updateArticle, article, title, category, content, handleSubmit, categories, errors}) => {
     return (
         <div>
           {/* END Header */}
           <Banner
               backgroundImage={`url(${process.env.PUBLIC_URL}/assets/img/bg-laptop.jpg)`} 
-              title="Write an article"
+             
+              title= {editing?`Editing Article ${title}`: 'Write an article'}
           ></Banner>
           {/* Main container */}
           <main className="main-content">
@@ -20,7 +21,7 @@ const CreateArticleForm = ({handleInput, handleSubmit, categories, errors}) => {
                         errors.map(error => <li key={error.message} className="list-group-item text-danger">{error.message}</li>)
                     }
                   </ul>
-                    <form onSubmit={handleSubmit} className="p-30 bg-gray rounded" >
+                    <form onSubmit={editing?updateArticle:handleSubmit} className="p-30 bg-gray rounded" >
                       <div className="row">
                         <div className="form-group col-md-12 my-5">
                           <input 
@@ -34,11 +35,13 @@ const CreateArticleForm = ({handleInput, handleSubmit, categories, errors}) => {
                           onChange={handleInput} 
                           className="form-control form-control-lg" 
                           type="text" name="title" 
+                          value={title}
                           placeholder="Title" />
                         </div>
                         <div className="form-group col-12 col-md-6">
                           <select 
                           name="category" 
+                          value={category}
                           onChange={handleInput} 
                           className="form-control form-control-lg">
                             <option value>Select category</option>
@@ -53,11 +56,12 @@ const CreateArticleForm = ({handleInput, handleSubmit, categories, errors}) => {
                         className="form-control form-control-lg" 
                         rows={4} placeholder="Content" 
                         name="content" 
+                        value={content}
                         onChange={handleInput}
                         defaultValue={""} />
                       </div>
                       <div className="text-center">
-                        <button className="btn btn-lg btn-primary" type="submit">Create Article</button>
+                        <button className="btn btn-lg btn-primary" type="submit">{editing? 'Update Article': 'Create Article'}</button>
                       </div>
                     </form>
                   </div>

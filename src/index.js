@@ -9,7 +9,7 @@ import App from './components/App/index';
 import * as serviceWorker from './serviceWorker';
 import AuthService from './services/auth'
 import ArticleService from './services/article'
-
+import NotificationService from './services/notification';
 
 // Main Higher FUNC
 const Main = withRouter((props)=>{
@@ -17,6 +17,7 @@ const Main = withRouter((props)=>{
         <App {...props}
         AuthService= {new AuthService()} 
         ArticleService = { new ArticleService()}
+        NotificationService= {new NotificationService()}
         />
     )
 });

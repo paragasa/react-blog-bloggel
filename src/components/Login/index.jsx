@@ -22,11 +22,13 @@ class Login extends React.Component {
   }
   handleSubmit = async(event) => {
     event.preventDefault();
+
     try{
       const user = await this.props.loginUser(this.state);
       this.props.setAuthUser(user);
     }
     catch(errors){
+      this.props.NotificationService.error('Something went wrong.');
       this.setState({
         errors: errors
       })
