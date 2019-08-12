@@ -1,8 +1,10 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-
+import { EditorState, convertToRaw } from 'draft-js';
 import CreateArticleForm from './CreateArticleForm'
+import draftToHtml from 'draftjs-to-html';
+
 
 // HANDLE CREATIONG AND EDITNG
 class CreateArticle extends React.Component {
@@ -15,7 +17,7 @@ class CreateArticle extends React.Component {
         article: null,
         title: '',
         image: null,
-        content: '',
+        content: EditorState.createEmpty(),
         category: null,
       }
     }
@@ -38,13 +40,12 @@ class CreateArticle extends React.Component {
           editing: true,
           article: article,
           categories: categories,
-        })
+        });
       }else{
         this.setState({
           categories: categories,
         });
       }
-      
     }
       /**
    * Alter state from inputs
@@ -56,11 +57,23 @@ class CreateArticle extends React.Component {
       })
     }
 
-    handleSubmit = async(event) => {
-      event.preventDefault();
+    handleEditorState=(editorState)=>{
+      this.setState({
+        content:editorState,
+      })
+    }
 
+    handleSubmit = async(event) => {
+ 
+      event.preventDefault();
+ 
       try{
-        const article= await this.props.createArticle(this.state, this.props.token)
+        const article= await this.props.createArticle({
+          title: this.state.title,
+          content: draftToHtml(convertToRaw(this.state.content.getCurrentContent())),
+          category: this.state.category,
+          image: this.state.image,
+        }, this.props.token)
         this.props.NotificationService.success('Article Posted!');
         this.props.history.push("/")
       }catch(errors){
@@ -70,6 +83,8 @@ class CreateArticle extends React.Component {
         })
       }
     }
+
+
     updateArticle= async(event) => {
       //update service
       event.preventDefault();
@@ -103,6 +118,7 @@ class CreateArticle extends React.Component {
               category={this.state.category}
               content={this.state.content}
               updateArticle={this.updateArticle}
+              handleEditorState={this.handleEditorState}
               />
        
       )
@@ -130,7 +146,7 @@ CreateArticle.propTypes = {
     }).isRequired,
     created_at: PropTypes.string.isRequired,
   })),
-  notyService: PropTypes.shape({
+  NotificationService: PropTypes.shape({
     success: PropTypes.func.isRequired,
     error: PropTypes.func.isRequired,
   }).isRequired,

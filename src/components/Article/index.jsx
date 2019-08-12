@@ -16,12 +16,12 @@ const Article = ({article}) => {
           <Link to={`/article/${article.slug}`}>
             <img className="rounded" src={article.imageUrl} alt="..." />
           </Link>
-          <div className="card-block">
+          {/* <div className="card-block">
             <p className="text-justify">{article.content.substring(0,90)}</p>
             <p className="text-center mt-40">
               <Link className="btn btn-primary btn-round" to={`/article/${article.slug}`}>Read more</Link>
             </p>
-          </div>
+          </div> */}
         </article>
       );
 }

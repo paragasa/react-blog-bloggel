@@ -1,5 +1,5 @@
 import React from 'react'
-
+import renderHTML from 'react-render-html';
 
 const Article = ({article}) => {
     return (
@@ -43,7 +43,7 @@ const Article = ({article}) => {
               <div className="container">
                 <div className="row">
                   <div className="col-12 col-lg-8 offset-lg-2">
-                        {article.content}
+                        {renderHTML(article.content)}
                   </div>
                 </div>
               </div>

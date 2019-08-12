@@ -1,7 +1,11 @@
 import React from 'react'
 import Banner from './../../Banner';
+import PropTypes from 'prop-types';
+import { Editor } from 'react-draft-wysiwyg';
+import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 
-const CreateArticleForm = ({handleInput,editing,updateArticle, article, title, category, content, handleSubmit, categories, errors}) => {
+
+const CreateArticleForm = ({handleInput,editing,updateArticle, article, title, category, content,handleEditorState, handleSubmit, categories, errors}) => {
     return (
         <div>
           {/* END Header */}
@@ -52,13 +56,10 @@ const CreateArticleForm = ({handleInput,editing,updateArticle, article, title, c
                         </div>
                       </div>
                       <div className="form-group">
-                        <textarea 
-                        className="form-control form-control-lg" 
-                        rows={4} placeholder="Content" 
-                        name="content" 
-                        value={content}
-                        onChange={handleInput}
-                        defaultValue={""} />
+                          <Editor
+                            editorState={content}
+                            onEditorStateChange={handleEditorState}
+                          />
                       </div>
                       <div className="text-center">
                         <button className="btn btn-lg btn-primary" type="submit">{editing? 'Update Article': 'Create Article'}</button>
@@ -72,5 +73,29 @@ const CreateArticleForm = ({handleInput,editing,updateArticle, article, title, c
         </div>
       );
 }
+CreateArticleForm.propTypes = {
+  handleInput: PropTypes.func.isRequired,
+  categories: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    name: PropTypes.string.isRequired,
+  })).isRequired,
+  handleSubmit: PropTypes.func.isRequired,
+  errors: PropTypes.arrayOf(PropTypes.shape({
+    message: PropTypes.string.isRequired,
+  })).isRequired,
+  editing: PropTypes.bool.isRequired,
+  article: PropTypes.shape({
+    title: PropTypes.string.isRequired,
+  }),
+  title: PropTypes.string.isRequired,
+  content: PropTypes.objectOf(PropTypes.any).isRequired,
+  category: PropTypes.string,
+  updateArticle: PropTypes.func.isRequired,
+};
+
+CreateArticleForm.defaultProps = {
+  article: null,
+  category: null,
+};
 
 export default CreateArticleForm;
