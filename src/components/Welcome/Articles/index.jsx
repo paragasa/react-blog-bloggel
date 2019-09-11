@@ -3,6 +3,7 @@ import Banner from './../../Banner';
 import Article from './../../Article';
 
 const Articles= ({articles, nextUrl, prevUrl, handlePagination}) =>{
+    
     return (
         <div>
         <Banner 
@@ -15,7 +16,7 @@ const Articles= ({articles, nextUrl, prevUrl, handlePagination}) =>{
         <div className="row">
             <div className="col-12 col-lg-6 offset-lg-3">
                 {articles && articles.map(article => (
-                    <div key={article.id}>
+                    <div key={article._id}>
                     <Article article = {article} />
                     <hr/>
                     </div>  
@@ -24,7 +25,7 @@ const Articles= ({articles, nextUrl, prevUrl, handlePagination}) =>{
                      <a onClick={()=>handlePagination(prevUrl)} className={`btn btn-white ${prevUrl?'': 'disabled'}`} >Newer
                         <i className="ti-arrow-left fs-9 ml-4" />
                     </a>
-                    <a onClick={()=>handlePagination(nextUrl)} className={`btn btn-white $ls{nextUrl?'': 'disabled'}`} >
+                    <a onClick={()=>handlePagination(nextUrl)} className={`btn btn-white ${nextUrl?'': 'disabled'}`} >
                         <i className="ti-arrow-right fs-9 mr-4" /> Older
                     </a>
                     

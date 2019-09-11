@@ -26,15 +26,15 @@ export default class AuthService {
               name: data.name,
               email: data.email,
               password: data.password
-           });
+          });
 
-           return response.data.data;
+          return response.data;
 
       }catch(errors){
         const formatedErrors = {}
         //SERVER ISUE
-        if(errors.response && errors.response.status === 422){
-            formatedErrors['email'] = errors.response.data['email'][0]
+        if(errors.response && errors.response.status === 412){
+            formatedErrors['email'] = errors.response.data['email']
             return Promise.reject(formatedErrors);
         }
         //catch error of states, form validation error
@@ -50,7 +50,7 @@ export default class AuthService {
       };
 
       const messages = {
-        required: 'This {{field}} is required.',
+        required: 'This {{field}} is required .',
         'email.email': 'Invalid email.',
       };
       try{
@@ -60,18 +60,19 @@ export default class AuthService {
               email: data.email,
               password: data.password
            });
-        return response.data.data;
+        
+        return response.data;
 
       }catch(errors){
         const formatedErrors = {}
         //SERVER ISUE
        
-        if(errors.response && errors.response.status === 401){
+        if(errors.response && errors.response.status === 400){
             formatedErrors['email'] = 'Invalid email or password.'
             return Promise.reject(formatedErrors);
         }
         //catch error of states, form validation error
-        //console.log(errors)
+
         errors.forEach((error) => formatedErrors[error.field] = error.message);
         return Promise.reject(formatedErrors);
       }

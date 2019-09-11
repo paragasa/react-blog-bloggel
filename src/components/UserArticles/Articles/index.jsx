@@ -15,11 +15,11 @@ const Articles= ({articles, deleteArticle,editArticle, nextUrl, prevUrl, handleP
         <div className="row">
             <div className="col-12 col-lg-6 offset-lg-3">
                 {articles && articles.map(article => (
-                    <div key={article.id}>
+                    <div key={article._id}>
                     <Article article = {article} />
                     <div className="text-center">
                         <button onClick={()=>editArticle(article)}  className="btn btn-info">Edit Article</button>
-                        <button onClick={()=>deleteArticle(article.id)} className="btn btn-danger">
+                        <button onClick={()=>deleteArticle(article._id)} className="btn btn-danger">
                             Delete Post
                         </button>
                     </div>

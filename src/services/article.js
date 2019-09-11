@@ -5,18 +5,18 @@ import config from './../config';
 export default class ArticleServices {
 
     //Categories for Create Article
-    async getArticleCategories(){
-        let categories = JSON.parse(localStorage.getItem('categories'));
+    // async getArticleCategories(){
+    //     let categories = JSON.parse(localStorage.getItem('categories'));
         
-        if(categories){
-            return categories;
-        }else{
-            categories = await Axios.get(`${config.apiUrl}/categories`);
-            localStorage.setItem('categories', JSON.stringify(categories.data.categories)); //store cats
-        }
+    //     if(categories){
+    //         return categories;
+    //     }else{
+    //         categories = await Axios.get(`${config.apiUrl}/categories`);
+    //         localStorage.setItem('categories', JSON.stringify(categories.data.categories)); //store cats
+    //     }
 
-        return categories.data.categories;
-    }
+    //     return categories.data.categories;
+    // }
 
     //value of this would be boud to this class, pass class if you want it to have access to same data
     createArticle = async(data, token) =>{
@@ -24,7 +24,7 @@ export default class ArticleServices {
             const rules ={
                 title: 'required',
                 content: 'required' ,
-                category: 'required',
+                // category: 'required',
             }
 
             const messages ={
@@ -37,11 +37,11 @@ export default class ArticleServices {
             const response = await Axios.post(`${config.apiUrl}/articles`,{
             title: data.title,
             content: data.content,
-            category_id: data.category,
+            // category_id: data.category,
             imageUrl: image.secure_url,
              },{
             headers: {
-                Authorization: `Bearer ${token}`,
+                Authorization: `${token}`,
             }
             });
         
@@ -54,37 +54,37 @@ export default class ArticleServices {
             
             return Promise.reject(errors);
         }
-
-        
+  
     }
     updateArticle = async(data,article, token) =>{
 
         //upload and update image only if user places new one
         let image;
-        if(data.image){
-            image = await this.uploadToCloudinary(data.image);
-        }
+        
 
         try {
+            if(data.image){
+                image = await this.uploadToCloudinary(data.image);
+            }
             const rules ={
                 title: 'required',
                 content: 'required' ,
-                category: 'required',
+                // category: 'required',
             }
 
             const messages ={
                 required: 'The {{field}} is required'
-            }
+            }       
             await validateAll(data, rules, messages);
 
-            const response = await Axios.put(`${config.apiUrl}/articles/${article.id}`,{
+            const response = await Axios.put(`${config.apiUrl}/articles/${article._id}`,{
             title: data.title,
             content: data.content,
-            category_id: data.category,
+    
             imageUrl: image? image.secure_url: article.imageUrl,
              },{
             headers: {
-                Authorization: `Bearer ${token}`,
+                Authorization: `${token}`,
             }
             });
         
@@ -92,6 +92,7 @@ export default class ArticleServices {
         } catch (errors) {
             //errors from server
             if(errors.response){ 
+                
                 return Promise.reject(errors.response.data); 
             }
             
@@ -101,7 +102,7 @@ export default class ArticleServices {
         
     }
     async uploadToCloudinary(image){
-        const form = new FormData();
+       try{ const form = new FormData();
 
         form.append('file' , image);
 
@@ -109,40 +110,89 @@ export default class ArticleServices {
 
         const response = await Axios.post('https://api.cloudinary.com/v1_1/dazp4u2d6/image/upload', form)
 
- 
-        return response.data;
+        return response.data;}
+        catch (errors) {
+            //errors from server
+            if(errors.response){ 
+                
+                return Promise.reject(errors.response.data); 
+            }
+            
+            return Promise.reject(errors);
+        }
     }
 
     getArticles = async(url=`${config.apiUrl}/articles`) => {
-        const response = await Axios.get(url)
+        try{const response = await Axios.get(url)
        
-        return response.data.data;
+        return response.data;}
+        catch (errors) {
+            //errors from server
+            if(errors.response){ 
+                
+                return Promise.reject(errors.response.data); 
+            }
+            
+            return Promise.reject(errors);
+        }
     }
 
     getArticle = async(slug)=>{
-        const response = await Axios.get(`${config.apiUrl}/article/${slug}`);
-        return response.data.data;
+        try{
+            const response = await Axios.get(`${config.apiUrl}/article/${slug}`);
+      
+            return response.data;
+        }catch (errors) {
+            //errors from server
+            if(errors.response){ 
+                
+                return Promise.reject(errors.response.data); 
+            }
+            
+            return Promise.reject(errors);
+        }
     }
 
-    getUserArticles = async(token, url=`${config.apiUrl}/user/articles`) => {
-        const response = await Axios.get(url,{
+    getUserArticles = async(token, url=`${config.apiUrl}/articles/user`) => {
+        try{
+            const response = await Axios.get(url,{
             headers:{
-                Authorization: `Bearer ${token}`,
+                Authorization: `${token}`,
             }
         });
+        return response.data;
+        }catch (errors) {
+            //errors from server
+            if(errors.response){ 
+                
+                return Promise.reject(errors.response.data); 
+            }
+            
+            return Promise.reject(errors);
+        }
+   
         
-        return response.data.data;
+       
     }
     async deleteArticle(id,token){
-        const response = await Axios.delete(`${config.apiUrl}/articles/${id}`
+        
+        try {
+            const response = await Axios.delete(`${config.apiUrl}/articles/${id}`
             ,{
                 headers:{
-                    Authorization: `Bearer ${token}`,
+                    Authorization: `${token}`,
                 }
-            });
-           
-        
-        
+            });     
+        } catch (errors) {
+            //errors from server
+            if(errors.response){ 
+                
+                return Promise.reject(errors.response.data); 
+            }
+            
+            return Promise.reject(errors);
+        }
+       
         
     }
 

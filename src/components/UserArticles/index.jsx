@@ -37,15 +37,23 @@ class UserArticles extends Component {
     }
 
     deleteArticle= async(id) => {
-        await this.props.deleteArticle(id,this.props.token);
-
-        const articles = this.state.articles.data.filter(article => article.id !== id);
-        
-        this.setState({
-            articles: {
-                data: articles,
-            },
-        });
+       console.log(id)
+        if(window.confirm("Are you sure you want to delete this post?")){
+           
+            await this.props.deleteArticle(id,this.props.token);
+            console.log(this.state.articles.data)
+            const articles = this.state.articles.data.filter(article => article._id !== id);
+            
+            this.props.NotificationService.success('Post Deleted.');
+            this.setState({
+                articles: {
+                    data: articles,
+                },
+            });
+            
+        }else{
+            this.props.NotificationService.error('Cancelled');
+        }
         
     }
 
@@ -71,5 +79,9 @@ UserArticles.propTypes = {
     history: PropTypes.shape({
       push: PropTypes.func.isRequired,
     }).isRequired,
+    NotificationService: PropTypes.shape({
+    success: PropTypes.func.isRequired,
+    error: PropTypes.func.isRequired,
+  }).isRequired,
 };
 export default UserArticles;

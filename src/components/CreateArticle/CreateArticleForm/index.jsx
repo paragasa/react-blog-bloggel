@@ -7,7 +7,7 @@ import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 
 const CreateArticleForm = ({
   handleInput,editing,updateArticle, article, 
-  title, category, content,onEditorStateChange, handleSubmit, categories, errors}) => {
+  title,  content,onEditorStateChange, handleSubmit,  errors}) => {
     return (
         <div>
           {/* END Header */}
@@ -44,7 +44,7 @@ const CreateArticleForm = ({
                           value={title}
                           placeholder="Title" />
                         </div>
-                        <div className="form-group col-12 col-md-6">
+                        {/* <div className="form-group col-12 col-md-6">
                           <select 
                           name="category" 
                           value={category|| ''}
@@ -61,7 +61,7 @@ const CreateArticleForm = ({
                              </option>))}
 
                           </select>
-                        </div>
+                        </div> */}
                       </div>
                       <div className="form-group">
                           <Editor
@@ -83,10 +83,10 @@ const CreateArticleForm = ({
 }
 CreateArticleForm.propTypes = {
   handleInput: PropTypes.func.isRequired,
-  categories: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.number.isRequired,
-    name: PropTypes.string.isRequired,
-  })).isRequired,
+  // categories: PropTypes.arrayOf(PropTypes.shape({
+  //   id: PropTypes.number.isRequired,
+  //   name: PropTypes.string.isRequired,
+  // })).isRequired,
   handleSubmit: PropTypes.func.isRequired,
   errors: PropTypes.arrayOf(PropTypes.shape({
     message: PropTypes.string.isRequired,
@@ -97,13 +97,13 @@ CreateArticleForm.propTypes = {
   }),
   title: PropTypes.string.isRequired,
   content: PropTypes.objectOf(PropTypes.any).isRequired,
-  category: PropTypes.string,
+  // category: PropTypes.string,
   updateArticle: PropTypes.func.isRequired,
 };
 
 CreateArticleForm.defaultProps = {
   article: null,
-  category: null,
+  // category: null,
 };
 
 export default CreateArticleForm;

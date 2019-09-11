@@ -52,7 +52,7 @@ class App extends React.Component{
   //Welcome page sends Get for articles, set list articles to app state to optimeize req
   setArticles =(articles)=>{
     this.setState({
-      articles:articles,
+      articles,
     });
   }
 
@@ -94,6 +94,7 @@ class App extends React.Component{
                   component={UserArticles}
                   props={{
                     getUserArticles: this.props.ArticleService.getUserArticles,
+                    NotificationService: this.props.NotificationService,
                     setArticles: this.setArticles,
                     token: this.state.authUser?this.state.authUser.token: null,
                     deleteArticle: this.props.ArticleService.deleteArticle,
@@ -104,7 +105,7 @@ class App extends React.Component{
                   path="/article/edit/:slug"
                   component={CreateArticle}
                   props={{
-                    getArticleCategories: this.props.ArticleService.getArticleCategories,
+                    // getArticleCategories: this.props.ArticleService.getArticleCategories,
                     createArticle : this.props.ArticleService.createArticle,
                     token: this.state.authUser? this.state.authUser.token: null,
                     updateArticle: this.props.ArticleService.updateArticle,
@@ -120,7 +121,7 @@ class App extends React.Component{
                 path="/articles/create" 
                 component ={CreateArticle}
                 props={{
-                    getArticleCategories: this.props.ArticleService.getArticleCategories,
+                    // getArticleCategories: this.props.ArticleService.getArticleCategories,
                     createArticle : this.props.ArticleService.createArticle,
                     token: this.state.authUser? this.state.authUser.token: null,
                     NotificationService: this.props.NotificationService,
@@ -146,7 +147,8 @@ class App extends React.Component{
                 component={Login}
                 props={{
                   loginUser: this.props.AuthService.loginUser,
-                  setAuthUser: this.setAuthUser
+                  setAuthUser: this.setAuthUser,
+                  NotificationService: this.props.NotificationService,
                 }}
                 //return if auth already, will redirect to page if true
                 isAuthenticated={this.state.authUser!==null}

@@ -12,14 +12,14 @@ class CreateArticle extends React.Component {
     constructor() {
       super();
       this.state={
-        categories: [],
+        // categories: [],
         errors: [],
         editing: false,
         article: null,
         title: '',
         image: null,
         content: EditorState.createEmpty(),
-        category: null,
+        // category: null,
       }
     }
     async componentWillMount(){
@@ -35,7 +35,7 @@ class CreateArticle extends React.Component {
           return;
         }
        
-        const categories = await this.props.getArticleCategories();
+        // const categories = await this.props.getArticleCategories();
        
         const blocksFromHtml = htmlToDraft(article.content);
         const { contentBlocks, entityMap } = blocksFromHtml;
@@ -44,18 +44,18 @@ class CreateArticle extends React.Component {
 
         this.setState({
           title: article.title,
-          category: article.category_id,
+          // category: article._id,
           content: editorState,
           editing: true,
           article: article,
-          categories: categories,
+          // categories: categories,
         });
       }else{
         
-        const categories = await this.props.getArticleCategories();
-        this.setState({
-          categories: categories,
-        });
+        // const categories = await this.props.getArticleCategories();
+        // this.setState({
+        //   categories: categories,
+        // });
       }
     }
       /**
@@ -82,7 +82,7 @@ class CreateArticle extends React.Component {
         const article= await this.props.createArticle({
           title: this.state.title,
           content: draftToHtml(convertToRaw(this.state.content.getCurrentContent())),
-          category: this.state.category,
+          // category: this.state.category,
           image: this.state.image,
         }, this.props.token)
         this.props.NotificationService.success('Article Posted!');
@@ -106,7 +106,7 @@ class CreateArticle extends React.Component {
           title: this.state.title,
           image:this.state.image,
           content: draftToHtml(convertToRaw(this.state.content.getCurrentContent())),
-          category: this.state.category,
+          // category: this.state.category,
         }, this.state.article, this.props.token)
         this.props.NotificationService.success('Article Updated');
         this.props.history.push("/");
@@ -122,12 +122,12 @@ class CreateArticle extends React.Component {
               <CreateArticleForm
               handleInput={this.handleInput}
               handleSubmit={this.handleSubmit}
-              categories = {this.state.categories}
+              // categories = {this.state.categories}
               errors = {this.state.errors}
               editing={this.state.editing}
               article={this.state.article}
               title={this.state.title}
-              category={this.state.category}
+              // category={this.state.category}
               content={this.state.content}
               updateArticle={this.updateArticle}
               onEditorStateChange={this.onEditorStateChange}
@@ -138,7 +138,7 @@ class CreateArticle extends React.Component {
     }
 }
 CreateArticle.propTypes = {
-  getArticleCategories: PropTypes.func.isRequired,
+  // getArticleCategories: PropTypes.func.isRequired,
   createArticle: PropTypes.func.isRequired,
   token: PropTypes.string.isRequired,
   history: PropTypes.shape({
@@ -153,10 +153,10 @@ CreateArticle.propTypes = {
   articles: PropTypes.arrayOf(PropTypes.shape({
     title: PropTypes.string.isRequired,
     imageUrl: PropTypes.string.isRequired,
-    category: PropTypes.shape({
-      name: PropTypes.string.isRequired,
-    }).isRequired,
-    created_at: PropTypes.string.isRequired,
+    // category: PropTypes.shape({
+    //   name: PropTypes.string.isRequired,
+    // }).isRequired,
+    createdAt: PropTypes.string.isRequired,
   })),
   NotificationService: PropTypes.shape({
     success: PropTypes.func.isRequired,

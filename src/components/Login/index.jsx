@@ -12,9 +12,7 @@ class Login extends React.Component {
         errors: {}
       }
     }
-  /**
-   * Alter state from inputs
-   */
+
   handleInput = (event) => {
     this.setState({
       [event.target.name] : event.target.value  //append input object
@@ -28,7 +26,8 @@ class Login extends React.Component {
       this.props.setAuthUser(user);
     }
     catch(errors){
-      this.props.NotificationService.error('Something went wrong.');
+      const error_msg = errors.email   
+      this.props.NotificationService.error(error_msg);
       this.setState({
         errors: errors
       })

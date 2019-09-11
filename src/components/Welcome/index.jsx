@@ -9,19 +9,22 @@ class Welcome extends React.Component{
     constructor(){
         super();
         this.state={
-            articles: {},
+            articles: [],
         }
     }
 
     async componentWillMount(){
      //send a get to articles
         const articles = await this.props.getArticles();
+        // console.log(articles)
 
         this.setState({
-            articles:articles,
+            articles: articles,
         });
+        
         //update app's article state
         this.props.setArticles(articles.data);
+   
     }
     handlePagination= async(url)=>{
         //send a get to articles, next urls
@@ -31,7 +34,7 @@ class Welcome extends React.Component{
             articles:articles,
         });
         //update app's article state
-        this.props.setArticles(articles.data);
+        this.props.setArticles(articles);
     }
     render(){
         return(
