@@ -20,20 +20,29 @@ export default class ArticleServices {
 
     //value of this would be boud to this class, pass class if you want it to have access to same data
     createArticle = async(data, token) =>{
+        if (!data.image) {
+            return Promise.reject([{
+              message: 'The image is required.',
+            }]);
+          }
+       
         try {
             const rules ={
                 title: 'required',
                 content: 'required' ,
+              
                 // category: 'required',
             }
-
             const messages ={
                 required: 'The {{field}} is required'
             }
+            
             await validateAll(data, rules, messages)
 
-            const image = await this.uploadToCloudinary(data.image);
-
+        
+            const image= await this.uploadToCloudinary(data.image);
+            
+           
             const response = await Axios.post(`${config.apiUrl}/articles`,{
             title: data.title,
             content: data.content,
@@ -41,7 +50,7 @@ export default class ArticleServices {
             imageUrl: image.secure_url,
              },{
             headers: {
-                Authorization: `${token}`,
+                Authorization: token,
             }
             });
         
@@ -60,7 +69,7 @@ export default class ArticleServices {
 
         //upload and update image only if user places new one
         let image;
-        
+       
 
         try {
             if(data.image){
@@ -84,7 +93,7 @@ export default class ArticleServices {
             imageUrl: image? image.secure_url: article.imageUrl,
              },{
             headers: {
-                Authorization: `${token}`,
+                Authorization: token,
             }
             });
         
@@ -157,7 +166,7 @@ export default class ArticleServices {
         try{
             const response = await Axios.get(url,{
             headers:{
-                Authorization: `${token}`,
+                Authorization: token,
             }
         });
         return response.data;
@@ -180,7 +189,7 @@ export default class ArticleServices {
             const response = await Axios.delete(`${config.apiUrl}/articles/${id}`
             ,{
                 headers:{
-                    Authorization: `${token}`,
+                    Authorization: token,
                 }
             });     
         } catch (errors) {

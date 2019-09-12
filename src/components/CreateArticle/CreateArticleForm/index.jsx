@@ -24,18 +24,20 @@ const CreateArticleForm = ({
                   <div className="col-12 col-lg-12">
                   <ul className="list-group">
                     {
-                        errors.map(error => <li key={error.message} className="list-group-item text-danger">{error.message}</li>)
+                        errors && errors.map(error => <li key={error.message} className="list-group-item text-danger">{error.message}</li>)
                     }
                   </ul>
                     <form onSubmit={editing?updateArticle:handleSubmit} className="p-30 bg-gray rounded" >
                       <div className="row">
                         <div className="form-group col-md-12 my-5">
+                          <h4>Upload your image</h4>
                           <input 
                           name="image" 
                           onChange={handleInput}
                            type="file" 
                            className="form-control" />
                         </div>
+                        
                         <div className="form-group col-12 col-md-6">
                           <input 
                           onChange={handleInput} 

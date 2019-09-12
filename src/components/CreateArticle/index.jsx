@@ -62,7 +62,7 @@ class CreateArticle extends React.Component {
    * Alter state from inputs
    */
     handleInput = (event) => {
-      
+
       this.setState({
         [event.target.name] : event.target.type === 'file'? event.target.files[0]: event.target.value  //append input object
       })
@@ -88,6 +88,7 @@ class CreateArticle extends React.Component {
         this.props.NotificationService.success('Article Posted!');
         this.props.history.push("/")
       }catch(errors){
+        console.log(errors);
         this.props.NotificationService.error('Something went wrong.');
         this.setState({
           errors: errors,
