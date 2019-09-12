@@ -8,7 +8,11 @@ const Navbar = ({authUser, removeAuthUser}) =>{
         <nav className="topbar topbar-inverse topbar-expand-md topbar-sticky">
         <div className="container">
           <div className="topbar-left">
-            <button className="topbar-toggler">☰</button>
+            <button className="topbar-toggler">
+              <div className="bar bar-1"></div>
+              <div className="bar bar-2"></div>
+              <div className="bar bar-3"></div>
+            </button>
             <Link className="topbar-brand" to="/">
               <img className="logo-default" src={`${process.env.PUBLIC_URL}/assets/img/logo.png`} alt="logo" />
               <img className="logo-inverse" src={`${process.env.PUBLIC_URL}/assets/img/logo-light.png`} alt="logo" />

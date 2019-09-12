@@ -22,7 +22,7 @@ const Article = ({article:{title, createdAt, updatedAt, content, imageUrl, autho
                   <br />
                   <p>
                     <span className="opacity-70 mr-8">By</span>
-                    <a className="text-white" href="#">{author.name}s</a>
+                    <a className="text-white" href="#">{author.name}</a>
                   </p>
                   <p>
                   <img className="rounded-circle w-40" src={`${process.env.PUBLIC_URL}/assets/img/avatar/2.jpg`} alt="..." />

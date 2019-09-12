@@ -7,31 +7,32 @@ const Articles= ({articles, nextUrl, prevUrl, handlePagination}) =>{
     return (
         <div>
         <Banner 
-            backgroundImage="url(assets/img/hero.jpg"
+            backgroundImage="url(https://source.unsplash.com/collection/388793/1100x900)"
             title="Bloggel"
             subTitle="Check out some of the latest blogs."
         >
         </Banner>
         <main className="main-content bg-gray">
-        <div className="row">
-            <div className="col-12 col-lg-6 offset-lg-3">
+        <div className="row ">
+            <div className="articles-box col-12 ">
                 {articles && articles.map(article => (
-                    <div key={article._id}>
+                    <div className="article-item col-8 col-lg-5  m-3" key={article._id}>
                     <Article article = {article} />
-                    <hr/>
+                    
                     </div>  
                 ))}
-                <nav className="flexbox mt-15 mb-50">
-                     <a onClick={()=>handlePagination(prevUrl)} className={`btn btn-white ${prevUrl?'': 'disabled'}`} >Newer
-                        <i className="ti-arrow-left fs-9 ml-4" />
+                
+                </div>
+                <div className="mx-auto mt-15 mb-30">
+                    <a onClick={()=>handlePagination(prevUrl)} className={`btn btn-white btn-page ${prevUrl?'': 'disabled'}`} >Newer
+                        <i className="ti-arrow-left fs-9 mr-7" />
                     </a>
-                    <a onClick={()=>handlePagination(nextUrl)} className={`btn btn-white ${nextUrl?'': 'disabled'}`} >
-                        <i className="ti-arrow-right fs-9 mr-4" /> Older
+                    <a onClick={()=>handlePagination(nextUrl)} className={`btn btn-white btn-page $ls{nextUrl?'': 'disabled'}`} >
+                        <i className="ti-arrow-right fs-9 ml-7" /> Older
                     </a>
-                    
-                </nav>
                 </div>
             </div>
+            
         </main>
         
        

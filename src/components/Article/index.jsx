@@ -6,13 +6,13 @@ const Article = ({article}) => {
 
     return (
 
-        <article className="my-90">
-          <header className="text-center mb-40">
+        <article className="my-50">
+          <header className="text-center mb-20">
             <h3>
               <Link to={`/article/${article.slug}`}>{article.title}</Link>
             </h3>
             <div className="link-color-default fs-12">
-              {/* <Link to={`/article/${article.slug}`} >{article.category.name}</Link>, */}
+              <Link to={`/article/${article.slug}`} >by {article.author.name}</Link>,
               <time>{(new Date(article.createdAt)).toDateString()}</time>
             </div>
           </header>
